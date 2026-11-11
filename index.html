@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fascicolo odontoiatrico</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1c2430;--mu:#667085;--bd:#d9dee6;--ac:#0e7490;--ok:#d9f2e3;--okb:#2e9e5b;--co:#d6e6fb;--cob:#2f6fd0;--ex:#e4e4e7;--exb:#71717a;--ck:#fdecc8;--ckb:#d98a0b;--dv:#fbdada;--dvb:#cf3b3b;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161c;--card:#1b212a;--tx:#e8ecf2;--mu:#98a2b3;--bd:#323b48;--ac:#38bdd8;--ok:#173b27;--co:#17325b;--ex:#2c2c31;--ck:#463613;--dv:#4a1c1c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12161c;--card:#1b212a;--tx:#e8ecf2;--mu:#98a2b3;--bd:#323b48;--ac:#38bdd8;--ok:#173b27;--co:#17325b;--ex:#2c2c31;--ck:#463613;--dv:#4a1c1c;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.app{max-width:980px;margin:0 auto;padding:14px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:0 0 10px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input,select,textarea,button{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:7px 10px}
+input[type=checkbox]{padding:0}
+button{cursor:pointer}button.p{background:var(--ac);border-color:var(--ac);color:#fff}button.d{color:var(--dvb)}
+label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--mu);flex:1;min-width:130px}
+label.c{flex-direction:row;align-items:center;gap:6px;font-size:14px;color:var(--tx);min-width:0;flex:none}
+.arch{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;margin-bottom:6px}
+.arch .gap{margin-left:8px}
+.t{padding:8px 0;font-size:12px;font-weight:600;border-radius:7px;text-align:center}
+.t.has{background:var(--ok);border-color:var(--okb)}.t.co{background:var(--co);border-color:var(--cob)}.t.ex{background:var(--ex);border-color:var(--exb);color:var(--mu)}.t.ck{background:var(--ck);border-color:var(--ckb)}.t.sel{outline:2px solid var(--ac);outline-offset:1px}
+.lg{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin:8px 0}
+.lg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px;border:1px solid}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%}
+th,td{border-bottom:1px solid var(--bd);padding:6px 8px;text-align:left;vertical-align:top;font-size:14px}th{font-size:12px;color:var(--mu)}
+.mu{color:var(--mu);font-size:13px}.hid{display:none}
+.tabs{display:flex;gap:8px;margin-bottom:14px}.tab{flex:1;padding:10px}#m3{width:100%;border-radius:10px;border:1px solid var(--bd);background:radial-gradient(circle at 50% 40%,var(--card),var(--bg));overflow:hidden}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}.ov.hid{display:none}
+.md{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;max-width:460px;width:100%;max-height:80vh;overflow:auto}.md p{margin:6px 0}.chip{display:inline-block;background:var(--co);border:1px solid var(--cob);border-radius:99px;padding:1px 9px;font-size:12px;margin-right:5px}
+#report{display:none}
+@media print{
+@page{size:A4;margin:14mm}
+body{background:#fff;color:#000;font-size:11pt}.app,.ov{display:none!important}#report{display:block}
+#report h1{font-size:18pt;margin:0}#report h2{font-size:13pt;margin:16px 0 6px;border-bottom:1.5px solid #000}#report h3{font-size:11pt;margin:12px 0 4px}
+#report table{page-break-inside:auto}#report tr{page-break-inside:avoid}
+#report th{background:#e8eaed;color:#000;font-size:10pt;border:1px solid #888}#report td{border:1px solid #888;font-size:10pt;color:#000}
+#report p{margin:3px 0}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="card">
+<h1>🦷 Fascicolo odontoiatrico</h1>
+<div class="row" style="margin-top:8px">
+<label>Paziente<input id="paz" placeholder="Nome e cognome"></label>
+<button class="p" id="bPrint">📄 Scarica PDF</button>
+<button id="bBk">💾 Backup</button><button id="bOut">Esci</button><span id="st" class="mu"></span>
+</div>
+<div id="bk" class="hid" style="margin-top:10px">
+<p class="mu">Copia il testo e conservalo (es. in un file) per avere un backup. Per ripristinare incolla qui il testo e premi Importa. I dati restano comunque salvati in questo browser.</p>
+<textarea id="bkt" rows="5" style="width:100%"></textarea>
+<div class="row" style="margin-top:6px"><button id="bImp">Importa</button><button id="bCp">Copia</button></div>
+</div>
+</div>
+
+<div class="tabs"><button class="tab p" onclick="tab(0)">Scheda</button><button class="tab" onclick="tab(1)">🦷 Mappa 3D</button></div>
+<div id="v1"><div class="card">
+<h2>Schema dentale <span class="mu">(tocca un dente per modificarlo)</span></h2>
+<div id="grid"></div>
+<div class="lg"><span><i style="background:var(--ok);border-color:var(--okb)"></i>Trattato</span><span><i style="background:var(--co);border-color:var(--cob)"></i>Corona</span><span><i style="background:var(--ex);border-color:var(--exb)"></i>Estratto</span><span><i style="background:var(--ck);border-color:var(--ckb)"></i>Da verificare</span></div>
+<div id="panel" class="hid"></div>
+</div>
+
+<div class="card" id="sed">
+<h2>Sedute <span id="edl" class="mu"></span></h2>
+<div class="row">
+<label style="max-width:160px">Data<input type="date" id="fD"></label>
+<label style="max-width:140px">Denti<input id="fT" placeholder="24+26 o Globale"></label>
+<label style="flex:3">Procedura<input id="fP" placeholder="Cosa è stato fatto"></label>
+<label style="max-width:170px">Tipo<input id="fC" list="cats" placeholder="Es. Otturazione"></label>
+<datalist id="cats"><option>Apertura<option>Medicazione<option>Endodonzia<option>Ricostruzione<option>Otturazione<option>Protesi<option>Impronta<option>Corona finale<option>Estrazione<option>Chirurgia<option>Post-chirurgico<option>Igiene<option>Guarito<option>Salvataggio</datalist>
+</div>
+<div class="row" style="margin:8px 0 12px"><button class="p" id="bAdd">Aggiungi seduta</button><button id="bCx" class="hid">Annulla modifica</button></div>
+<div class="sc"><table><thead><tr><th>Data</th><th>Denti</th><th>Procedura</th><th>Tipo</th><th></th></tr></thead><tbody id="sb"></tbody></table></div>
+</div></div>
+<div id="v2" class="hid"><div class="card"><h2>Mappa 3D <span class="mu">(trascina per ruotare · rotellina o pizzico per zoom · tocca un dente)</span></h2><div class="row" style="margin-bottom:8px"><button onclick="show3('all')">Entrambe</button><button onclick="show3('up')">Superiore</button><button onclick="show3('lo')">Inferiore</button><button onclick="nums3()">Numeri</button><button onclick="reset3()">Reset vista</button></div><div id="m3"></div><div class="lg"><span><i style="background:#9fe0b8;border-color:#2e9e5b"></i>Trattato</span><span><i style="background:#8db8f2;border-color:#2f6fd0"></i>Corona / impianto</span><span><i style="background:#9aa1ab;border-color:#71717a;opacity:.4"></i>Estratto</span><span><i style="background:#f5c76b;border-color:#d98a0b"></i>Da verificare</span></div></div></div>
+</div>
+<div id="login" class="ov hid"><div class="md"><h2>🔒 Accedi</h2><p class="mu">Il fascicolo è salvato su Supabase e protetto da login.</p><label>Email<input id="lgE" type="email" autocomplete="username"></label><label style="margin-top:8px">Password<input id="lgP" type="password" autocomplete="current-password"></label><p id="lgM" class="mu"></p><div class="row"><button class="p" id="lgIn">Accedi</button><button id="lgUp">Crea account</button></div></div></div>
+<div id="pop" class="ov hid"></div>
+<div id="report"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script>
+const K='fascicolo-odonto-v1';
+const seedT={14:["Otturazione semplice di 2ª classe","Completato"],15:["Estrazione radice + Impianto titanio + Moncone + Corona zirconio","Completato","co","ex"],16:["Otturazione complessa","Completato"],17:["Otturazione complessa / Medicazione salvataggio","Salvato"],18:["Estrazione indaginosa dente del giudizio senza lembo","Estratto","ex"],24:["Devitalizzazione bicanalare + Perno fibra di vetro + Corona zirconio","Completato","dv","co"],25:["Otturazione e ricostruzione","Completato"],26:["Preparazione, impronta e inserimento corona zirconio","Completato","dv","co"],27:["Otturazione complessa","Completato"],28:["Estrazione indaginosa dente del giudizio senza lembo","Estratto","ex"],36:["Devitalizzazione (pulpite) + Ricostruzione + Corona zirconio","Completato","dv","co"],37:["Otturazione complessa / Medicazione","Da verificare"],38:["Otturazione complessa","Completato"],46:["Otturazione 2ª classe + Ricostruzione","Completato"],47:["Endodonzia (infezione) + Perno + Corona zirconio","Completato","dv","co"]};
+const seedS=[["2024-12-19","47","Aperto per gestione infezione in corso","Apertura"],["2024-12-19","24","Aperto per pulizia pre-devitalizzazione","Apertura"],["2024-12-21","24","Devitalizzazione dente bicanalare","Endodonzia"],["2025-01-09","24","Inserito perno in fibra di vetro","Ricostruzione"],["2025-01-15","16","Otturazione complessa","Otturazione"],["2025-01-15","17","Aperto per medicare, tentata otturazione conservativa per salvataggio","Salvataggio"],["2025-01-23","28","Estrazione dente del giudizio","Estrazione"],["2025-01-23","38","Otturazione complessa","Otturazione"],["2025-01-23","47","Aperto di nuovo per medicazione","Medicazione"],["2025-01-23","37","Medicazione / tentativo otturazione","Otturazione"],["2025-02-06","47","Aperto di nuovo per medicazione","Medicazione"],["2025-02-13","47","Chiuso. Necrosi spontanea, pronto per futura ricostruzione","Endodonzia"],["2025-02-20","18","Estrazione dente del giudizio indaginosa","Estrazione"],["2025-02-27","27","Otturazione complessa","Otturazione"],["2025-03-20","15","Estrazione radice residua + inserimento impianto endosseo in titanio","Chirurgia"],["2025-03-27","15","Rimozione punti di sutura","Post-chirurgico"],["2025-04-03","17","Chiuso e salvato in conservativa (guarito)","Guarito"],["2025-04-10","36","Devitalizzazione per pulpite acuta, infezione gestita, lasciato aperto","Apertura"],["2025-04-17","36","Inserita medicazione e chiuso. In attesa di ricostruzione","Medicazione"],["2025-05-08","36","Ricostruzione dente","Ricostruzione"],["2025-05-15","36","Limatura dente per preparazione corona","Protesi"],["2025-05-22","36","Presa impronta dente limato","Impronta"],["2025-05-29","36","Installazione e cementazione corona in zirconio","Corona finale"],["2025-06-05","14","Otturazione semplice","Otturazione"],["2025-06-13","15","Impronta / stampa laser dell’impianto","Impronta"],["2025-06-18","15","Installato moncone e corona in zirconio su impianto","Corona finale"],["2025-07-03","46","Otturazione di 2ª classe e ricostruzione","Ricostruzione"],["2025-07-11","Globale","Seduta di igiene orale professionale","Igiene"],["2025-07-24","25","Otturazione dente","Otturazione"],["2025-07-31","25","Ultimata otturazione e ricostruzione dente","Ricostruzione"],["2025-09-25","47","Limatura dente per preparazione corona","Protesi"],["2025-10-02","47","Presa impronta dente 47","Impronta"],["2025-10-09","47","Installazione e cementazione corona in zirconio","Corona finale"],["2025-11-06","24+26","Preparazione e limatura per corone","Protesi"],["2025-11-10","24+26","Sistemazione preparazione + presa impronta","Impronta"],["2025-11-14","24+26","Installazione e cementazione corone in zirconio su entrambi i denti","Corona finale"],["2026-02-18","Globale","Seduta di igiene orale professionale","Igiene"],["2026-09-24","Globale","Seduta di igiene orale professionale","Igiene"]];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=d=>d?d.split('-').reverse().join('/'):'';
+const STATI=['Completato','In corso','Salvato','Estratto','Da verificare'];
+const QN={1:'Superiore Destro (11 - 18)',2:'Superiore Sinistro (21 - 28)',3:'Inferiore Sinistro (31 - 38)',4:'Inferiore Destro (41 - 48)'};
+function seed(){const T={};for(const n in seedT){const a=seedT[n];T[n]={tr:a[0],st:a[1],dv:a.includes('dv'),co:a.includes('co'),ex:a.includes('ex')}}
+return{paz:'',T,sed:seedS.map((s,i)=>({id:i+1,d:s[0],t:s[1],p:s[2],c:s[3]}))}}
+let D={paz:'',T:{},sed:[]};
+const SB_URL='https://zdwzombpaixkcryfpkxg.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpkd3pvbWJwYWl4a2NyeWZwa3hnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3MzczMTAsImV4cCI6MjA5NzMxMzMxMH0.ttAPvk-kV_BWC8RH43eVNXsN6HglLIQhp0rieWwjGPw';
+const sb=window.supabase.createClient(SB_URL,SB_KEY);
+let snap=null,tmr=null,busy=0;
+const setSt=t=>{$('st').textContent=t};
+function snapshot(X){X=X||D;snap={T:{},S:{},paz:X.paz};for(const n in X.T)snap.T[n]=JSON.stringify(X.T[n]);X.sed.forEach(s=>snap.S[s.id]=JSON.stringify(s))}
+function save(){if(!snap)return;clearTimeout(tmr);setSt('Salvataggio…');tmr=setTimeout(sync,500)}
+async function sync(){if(busy){tmr=setTimeout(sync,500);return}busy=1;
+try{const X=JSON.parse(JSON.stringify(D)),ck=r=>{if(r.error)throw r.error};
+const tu=Object.keys(X.T).filter(n=>snap.T[n]!==JSON.stringify(X.T[n])).map(n=>({num:+n,...X.T[n]})),td=Object.keys(snap.T).filter(n=>!X.T[n]).map(Number);
+const su=X.sed.filter(s=>snap.S[s.id]!==JSON.stringify(s)),sd=Object.keys(snap.S).filter(i=>!X.sed.some(s=>s.id==i)).map(Number);
+if(tu.length)ck(await sb.from('odonto_teeth').upsert(tu));
+if(td.length)ck(await sb.from('odonto_teeth').delete().in('num',td));
+if(su.length)ck(await sb.from('odonto_sedute').upsert(su));
+if(sd.length)ck(await sb.from('odonto_sedute').delete().in('id',sd));
+if(snap.paz!==X.paz)ck(await sb.from('odonto_meta').upsert({k:'paz',v:X.paz}));
+snapshot(X);setSt('✓ Salvato sul database')}catch(e){setSt('⚠️ Errore: '+(e.message||e))}busy=0}
+async function load(){const [a,b,c]=await Promise.all([sb.from('odonto_teeth').select('*'),sb.from('odonto_sedute').select('*'),sb.from('odonto_meta').select('*')]);
+for(const r of [a,b,c])if(r.error)throw r.error;
+D={paz:(c.data.find(r=>r.k==='paz')||{}).v||'',T:{},sed:b.data.map(r=>({id:r.id,d:r.d,t:r.t,p:r.p,c:r.c||''}))};
+a.data.forEach(r=>D.T[r.num]={tr:r.tr||'',st:r.st,dv:r.dv,co:r.co,ex:r.ex});snapshot()}
+async function start(){$('login').className='ov hid';setSt('Caricamento…');
+try{await load();if(!Object.keys(D.T).length&&!D.sed.length&&confirm('Il database è vuoto. Caricare i dati iniziali del fascicolo?'))D=seed();setSt('✓ Connesso')}catch(e){setSt('⚠️ Errore: '+(e.message||e))}
+$('paz').value=D.paz||'';all()}
+async function boot(){const{data}=await sb.auth.getSession();if(data.session)start();else $('login').className='ov'}
+$('lgIn').onclick=async()=>{const{error}=await sb.auth.signInWithPassword({email:$('lgE').value.trim(),password:$('lgP').value});if(error)$('lgM').textContent=error.message;else start()};
+$('lgUp').onclick=async()=>{const{error}=await sb.auth.signUp({email:$('lgE').value.trim(),password:$('lgP').value});$('lgM').textContent=error?error.message:'Account creato. Se richiesto conferma l’email, poi premi Accedi.'};
+$('lgP').onkeydown=e=>{if(e.key==='Enter')$('lgIn').click()};
+$('bOut').onclick=async()=>{await sb.auth.signOut();location.reload()};
+let sel=null,edit=null;
+const teeth=s=>s.t.match(/\d\d/g)||[];
+const forTooth=n=>D.sed.filter(s=>teeth(s).includes(String(n))).sort((a,b)=>a.d.localeCompare(b.d));
+const cls=n=>{const t=D.T[n];if(!t)return'';return t.co?'co':t.ex||t.st==='Estratto'?'ex':t.st==='Da verificare'?'ck':'has'};
+
+function grid(){const rows=[[18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28],[48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38]];
+$('grid').innerHTML=rows.map(r=>'<div class="arch">'+r.map((n,i)=>`<button class="t ${cls(n)} ${sel==n?'sel':''}" data-n="${n}" ${i==8?'style="margin-left:8px"':''}>${n}</button>`).join('')+'</div>').join('');
+$('grid').querySelectorAll('.t').forEach(b=>b.onclick=()=>{sel=+b.dataset.n;grid();panel()})}
+
+function panel(){const p=$('panel');if(!sel){p.className='hid';return}
+const t=D.T[sel]||{tr:'',st:'Completato',dv:false,co:false,ex:false};p.className='';p.style.cssText='border-top:1px solid var(--bd);padding-top:12px';
+p.innerHTML=`<h2>Dente ${sel} <span class="mu">· ${forTooth(sel).length} sedute</span></h2><div class="row"><label style="flex:3">Trattamento eseguito<input id="pTr" value="${esc(t.tr)}"></label><label style="max-width:170px">Stato<select id="pSt">${STATI.map(s=>`<option ${s==t.st?'selected':''}>${s}</option>`).join('')}</select></label></div>
+<div class="row" style="margin:8px 0"><label class="c"><input type="checkbox" id="pDv" ${t.dv?'checked':''}>Devitalizzato</label><label class="c"><input type="checkbox" id="pCo" ${t.co?'checked':''}>Con corona</label><label class="c"><input type="checkbox" id="pEx" ${t.ex?'checked':''}>Estratto (anche se sostituito da impianto)</label></div>
+<div class="row"><button class="p" id="pSv">Salva dente</button><button id="pNs">+ Nuova seduta per il ${sel}</button><button class="d" id="pDl">Rimuovi scheda</button><button id="pCl">Chiudi</button></div>${forTooth(sel).length?'<p style="margin:14px 0 4px"><b>Lavori eseguiti</b></p><table>'+forTooth(sel).map(s=>`<tr><td style="white-space:nowrap">${fmt(s.d)}</td><td>${esc(s.p)}${s.c?` <span class="mu">(${esc(s.c)})</span>`:''}</td></tr>`).join('')+'</table>':''}`;
+$('pSv').onclick=()=>{D.T[sel]={tr:$('pTr').value.trim(),st:$('pSt').value,dv:$('pDv').checked,co:$('pCo').checked,ex:$('pEx').checked};all()};
+$('pDl').onclick=()=>{if(confirm('Rimuovere la scheda del dente '+sel+'? Le sedute restano.')){delete D.T[sel];all()}};
+$('pCl').onclick=()=>{sel=null;grid();panel()};
+$('pNs').onclick=()=>{clearForm();$('fT').value=sel;$('fD').value=new Date().toISOString().slice(0,10);$('sed').scrollIntoView({behavior:'smooth'});$('fP').focus()}}
+
+function clearForm(){edit=null;['fD','fT','fP','fC'].forEach(i=>$(i).value='');$('bAdd').textContent='Aggiungi seduta';$('bCx').className='hid';$('edl').textContent=''}
+$('bCx').onclick=clearForm;
+$('bAdd').onclick=()=>{const d=$('fD').value,t=$('fT').value.trim(),p=$('fP').value.trim(),c=$('fC').value.trim();
+if(!d||!t||!p){alert('Compila almeno data, denti e procedura.');return}
+if(edit){Object.assign(D.sed.find(s=>s.id==edit),{d,t,p,c})}else D.sed.push({id:Date.now(),d,t,p,c});
+clearForm();all()};
+
+function sedute(){$('sb').innerHTML=[...D.sed].sort((a,b)=>b.d.localeCompare(a.d)).map(s=>`<tr><td style="white-space:nowrap">${fmt(s.d)}</td><td>${esc(s.t)}</td><td>${esc(s.p)}</td><td>${esc(s.c)}</td><td style="white-space:nowrap"><button data-e="${s.id}">✏️</button> <button class="d" data-x="${s.id}">🗑</button></td></tr>`).join('')||'<tr><td colspan="5" class="mu">Nessuna seduta.</td></tr>';
+$('sb').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{const s=D.sed.find(x=>x.id==b.dataset.e);edit=s.id;$('fD').value=s.d;$('fT').value=s.t;$('fP').value=s.p;$('fC').value=s.c;$('bAdd').textContent='Salva modifica';$('bCx').className='';$('edl').textContent='· modifica in corso';$('sed').scrollIntoView({behavior:'smooth'})});
+$('sb').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{if(confirm('Eliminare questa seduta?')){D.sed=D.sed.filter(x=>x.id!=b.dataset.x);all()}})}
+
+function report(){const ns=Object.keys(D.T).map(Number).sort((a,b)=>a-b),L=f=>ns.filter(n=>f(D.T[n])).join(' – ')||'—';
+let h=`<h1>FASCICOLO ODONTOIATRICO</h1><p>${D.paz?'<b>Paziente:</b> '+esc(D.paz)+' · ':''}Aggiornato al ${new Date().toLocaleDateString('it-IT')}</p>
+<h2>DEVITALIZZAZIONI E CORONE</h2><p><b>Denti devitalizzati:</b> ${L(t=>t.dv)}</p><p><b>Denti estratti:</b> ${L(t=>t.ex||t.st==='Estratto')}</p><p><b>Denti con corona:</b> ${L(t=>t.co)}</p><h2>1. SINTESI PER ARCATE E QUADRANTI</h2>`;
+for(const q of [1,2,3,4]){const r=ns.filter(n=>Math.floor(n/10)==q);if(!r.length)continue;
+h+=`<h3>QUADRANTE ${q}: ${QN[q]}</h3><table><tr><th>Dente</th><th>Trattamento eseguito</th><th>Date di lavorazione</th><th>Stato</th></tr>`+r.map(n=>{const t=D.T[n];return`<tr><td><b>Dente ${n}</b></td><td>${esc(t.tr)}</td><td>${forTooth(n).map(s=>`${fmt(s.d)} – ${esc(s.p)}`).join('<br>')}</td><td>${esc(t.st)}</td></tr>`}).join('')+'</table>'}
+h+='<h2>2. CRONOLOGIA ANALITICA DELLE SEDUTE CLINICHE</h2><table><tr><th>Data</th><th>Dente</th><th>Trattamento / Procedura eseguita</th><th>Stato / Note</th></tr>';
+let last='';[...D.sed].sort((a,b)=>a.d.localeCompare(b.d)).forEach(s=>{h+=`<tr><td>${s.d==last?'':fmt(s.d)}</td><td>${esc(s.t)}</td><td>${esc(s.p)}</td><td>${esc(s.c)}</td></tr>`;last=s.d});
+$('report').innerHTML=h+'</table>'}
+
+const T3={on:0,vis:0,run:0};
+const W3=[0,8.5,6.5,7.5,7,6.5,10.5,10,9],DP=[0,7,6.5,8,9,9,10.5,10.5,10],CH=[0,10.5,9,10,8.5,8,7.5,7.5,7],RL=[0,7,7,8,7,7,6,6,6],AA=38,BB=34;
+function crownGeo(k){const w=W3[k]*.96,d=DP[k],h=CH[k],g=new THREE.SphereGeometry(.5,26,18),p=g.attributes.position;
+for(let i=0;i<p.count;i++){let x=p.getX(i),y=p.getY(i),z=p.getZ(i),t;const mx=Math.max(Math.abs(x),Math.abs(y),Math.abs(z))||1,bl=.55;x=x*(1-bl)+x/mx*.5*bl;y=y*(1-bl)+y/mx*.5*bl;z=z*(1-bl)+z/mx*.5*bl;x*=.72+.28*Math.min(1,(y+.5)*2.5);
+if(k<=2){y=Math.min(y,.38);t=y+.5;x*=1+.15*Math.sin(Math.PI*t);z*=1-.75*t*t}
+else if(k==3){t=Math.pow(y+.5,2.2);x*=1-.55*t;z*=1-.35*t}
+else y=Math.min(y,.36);
+p.setXYZ(i,x*w,(y+.5)*h,z*d)}g.computeVertexNormals();return g}
+function label(n,y,z){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');x.font='bold 34px sans-serif';x.textAlign='center';x.textBaseline='middle';x.lineWidth=7;x.strokeStyle='#1c2430';x.strokeText(n,32,34);x.fillStyle='#fff';x.fillText(n,32,34);
+const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));s.scale.set(4.5,4.5,1);s.position.set(0,y,z);s.visible=T3.nm!==0;return s}
+function makeTooth(n){const k=n%10,up=Math.floor(n/10)<3,t=D.T[n],c=cls(n),w=W3[k]*.96,d=DP[k],g=new THREE.Group();g.userData.n=n;
+const ghost=c==='ex',impl=!!(t&&t.ex&&t.co),col={has:0x9fe0b8,co:0x8db8f2,ck:0xf5c76b}[c]||0xf4efe4;
+const m=new THREE.MeshStandardMaterial({color:ghost?0x9aa1ab:col,roughness:.3,transparent:ghost,opacity:ghost?.22:1});
+g.add(new THREE.Mesh(crownGeo(k),m));
+const top=CH[k]*.86,cu=(x,z)=>{const s=new THREE.Mesh(new THREE.SphereGeometry(1,12,8),m);s.scale.set(w*.17,w*.12,w*.17);s.position.set(x,top-.2,z);g.add(s)};
+if(k>=6){cu(-w*.24,-d*.2);cu(w*.24,-d*.2);cu(-w*.24,d*.2);cu(w*.24,d*.2)}else if(k>=4){cu(0,-d*.22);cu(0,d*.22)}
+if(!ghost){const rm=new THREE.MeshStandardMaterial({color:0xe3d3a8,roughness:.6}),rt=(x,z,r,l)=>{const q=new THREE.Mesh(new THREE.CylinderGeometry(r,r*.25,l,12),rm);q.position.set(x,-l/2+1.5,z);g.add(q)};
+if(impl){const im=new THREE.MeshStandardMaterial({color:0x9aa3ad,metalness:.8,roughness:.3}),b=new THREE.Mesh(new THREE.CylinderGeometry(2.1,1.7,9,16),im);b.position.y=-3.5;g.add(b);for(let i=0;i<4;i++){const r=new THREE.Mesh(new THREE.CylinderGeometry(2.6,2.6,.5,16),im);r.position.y=-1-i*2;g.add(r)}}
+else if(k<=5)rt(0,0,Math.min(w,d)*.3,RL[k]);
+else if(up){rt(-w*.28,d*.2,w*.16,RL[k]);rt(w*.28,d*.2,w*.16,RL[k]);rt(0,-d*.25,w*.16,RL[k])}else{rt(-w*.25,0,w*.17,RL[k]);rt(w*.25,0,w*.17,RL[k])}}
+g.add(label(n,CH[k]*.5,d/2+2.5));return g}
+function archPts(N,a,b,e){const p=[];for(let j=0;j<=N;j++){const th=Math.PI+e-j*(Math.PI+2*e)/N;p.push([a*Math.cos(th),b*Math.sin(th),th])}return p}
+function build3(){if(!T3.on)return;
+[[T3.tu,0],[T3.tl,1]].forEach(([g])=>{while(g.children.length)g.remove(g.children[0])});
+const R=[[18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28],[48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38]],N=400,pts=archPts(N,AA,BB,0),cum=[0];
+for(let j=1;j<=N;j++)cum.push(cum[j-1]+Math.hypot(pts[j][0]-pts[j-1][0],pts[j][1]-pts[j-1][1]));
+[T3.tu,T3.tl].forEach((g,r)=>{let pos=(cum[N]-R[r].reduce((s,n)=>s+W3[n%10],0))/2;
+R[r].forEach(n=>{const w=W3[n%10],dd=pos+w/2;pos+=w;let j=cum.findIndex(v=>v>=dd);if(j<0)j=N;const th=pts[j][2],tt=makeTooth(n);
+tt.position.set(pts[j][0],0,pts[j][1]);tt.rotation.y=Math.atan2(Math.cos(th)/AA,Math.sin(th)/BB);g.add(tt)})})}
+function init3(){if(T3.on)return;if(typeof THREE==='undefined'){$('m3').textContent='Impossibile caricare il motore 3D.';return}
+const el=$('m3'),w=el.clientWidth||600,h=Math.min(560,Math.round(w*.85)),r=new THREE.WebGLRenderer({antialias:true,alpha:true});
+r.setPixelRatio(Math.min(devicePixelRatio,2));r.setSize(w,h);el.style.height=h+'px';el.appendChild(r.domElement);
+const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(35,w/h,1,1000),root=new THREE.Group(),arch=new THREE.Group(),up=new THREE.Group(),lo=new THREE.Group();
+sc.add(new THREE.HemisphereLight(0xffffff,0x8a6a6a,.8));const dl=new THREE.DirectionalLight(0xffffff,.85);dl.position.set(40,80,120);sc.add(dl);
+root.rotation.order='YXZ';arch.position.z=-17;up.position.y=12;up.scale.y=-1;lo.position.y=-12;arch.add(up,lo);root.add(arch);sc.add(root);
+const gm=new THREE.MeshStandardMaterial({color:0xe48a8f,roughness:.55});
+[up,lo].forEach(g=>{const cv=new THREE.CatmullRomCurve3(archPts(60,AA,BB,.12).map(p=>new THREE.Vector3(p[0],-2.5,p[1]))),m=new THREE.Mesh(new THREE.TubeGeometry(cv,80,5.5,16),gm);m.scale.y=1.2;g.add(m)});
+Object.assign(T3,{on:1,r,sc,cam,root,up,lo,el,tu:new THREE.Group(),tl:new THREE.Group(),yaw:0,pitch:.22,dist:140});up.add(T3.tu);lo.add(T3.tl);
+const dom=r.domElement,ptr=new Map(),rc=new THREE.Raycaster();let moved=0,pd=0;dom.style.touchAction='none';
+const pinch=()=>{const v=[...ptr.values()];return v.length==2?Math.hypot(v[0][0]-v[1][0],v[0][1]-v[1][1]):0},zoom=f=>{T3.dist=Math.max(70,Math.min(300,T3.dist*f))};
+dom.onpointerdown=e=>{dom.setPointerCapture(e.pointerId);ptr.set(e.pointerId,[e.clientX,e.clientY]);moved=0;pd=pinch()};
+dom.onpointermove=e=>{const o=ptr.get(e.pointerId);if(!o)return;const dx=e.clientX-o[0],dy=e.clientY-o[1];ptr.set(e.pointerId,[e.clientX,e.clientY]);moved+=Math.abs(dx)+Math.abs(dy);
+if(ptr.size==2){const d=pinch();if(pd&&d)zoom(pd/d);pd=d}else{T3.yaw+=dx*.008;T3.pitch=Math.max(-1.2,Math.min(1.2,T3.pitch+dy*.006))}upd3()};
+dom.onpointerup=e=>{if(ptr.size==1&&moved<6){const b=dom.getBoundingClientRect();rc.setFromCamera({x:(e.clientX-b.left)/b.width*2-1,y:-((e.clientY-b.top)/b.height*2-1)},cam);
+const hit=rc.intersectObjects([T3.tu,T3.tl],true).find(h=>h.object.isMesh);if(hit){let o=hit.object;while(o&&!o.userData.n)o=o.parent;if(o)pop(o.userData.n)}}ptr.delete(e.pointerId)};
+dom.onpointercancel=e=>ptr.delete(e.pointerId);
+dom.addEventListener('wheel',e=>{e.preventDefault();zoom(1+e.deltaY*.001);upd3()},{passive:false});
+build3();upd3()}
+function upd3(){T3.root.rotation.set(T3.pitch,T3.yaw,0);T3.cam.position.set(0,0,T3.dist)}
+function resize3(){if(!T3.on)return;const w=T3.el.clientWidth,h=Math.min(560,Math.round(w*.85));T3.r.setSize(w,h);T3.el.style.height=h+'px';T3.cam.aspect=w/h;T3.cam.updateProjectionMatrix()}
+function nums3(){T3.nm=T3.nm===0?1:0;build3()}
+function show3(s){T3.up.visible=s!=='lo';T3.lo.visible=s!=='up'}
+function reset3(){T3.yaw=0;T3.pitch=.22;T3.dist=140;show3('all');upd3()}
+function tab(i){$('v1').className=i?'hid':'';$('v2').className=i?'':'hid';document.querySelectorAll('.tab').forEach((b,j)=>b.classList.toggle('p',j==i));T3.vis=i;
+if(i){init3();resize3();if(T3.on&&!T3.run){T3.run=1;(function f(){if(!T3.vis){T3.run=0;return}T3.r.render(T3.sc,T3.cam);requestAnimationFrame(f)})()}}}
+addEventListener('resize',()=>{if(T3.vis)resize3()});
+function pop(n){const t=D.T[n],ss=forTooth(n),p=$('pop');const ch=t?[t.dv&&'Devitalizzato',t.co&&'Con corona',(t.ex||t.st==='Estratto')&&'Estratto'].filter(Boolean):[];
+p.className='ov';const x=()=>{p.className='ov hid'};
+p.innerHTML=`<div class="md"><h2>Dente ${n} <span class="mu">· Quadrante ${Math.floor(n/10)}</span></h2>`+(t?`<p><b>Stato:</b> ${esc(t.st)}</p><p><b>Trattamento:</b> ${esc(t.tr)||'—'}</p>${ch.length?'<p>'+ch.map(c=>`<span class="chip">${c}</span>`).join('')+'</p>':''}`:'<p class="mu">Nessuna scheda per questo dente.</p>')+'<p style="margin-top:12px"><b>Lavori eseguiti</b></p>'+(ss.length?'<table>'+ss.map(s=>`<tr><td style="white-space:nowrap">${fmt(s.d)}</td><td>${esc(s.p)}${s.c?` <span class="mu">(${esc(s.c)})</span>`:''}</td></tr>`).join('')+'</table>':'<p class="mu">Nessuna seduta registrata.</p>')+'<div class="row" style="margin-top:12px"><button class="p" id="mEd">Modifica dente</button><button id="mNs">+ Seduta</button><button id="mCl">Chiudi</button></div></div>';
+p.onclick=e=>{if(e.target===p)x()};$('mCl').onclick=x;
+$('mEd').onclick=()=>{x();sel=n;all();$('panel').scrollIntoView({behavior:'smooth'})};
+$('mNs').onclick=()=>{x();clearForm();$('fT').value=n;$('fD').value=new Date().toISOString().slice(0,10);$('sed').scrollIntoView({behavior:'smooth'});$('fP').focus()}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('pop').className='ov hid'});
+function all(){save();grid();build3();panel();sedute();report()}
+$('paz').oninput=()=>{D.paz=$('paz').value;save();report()};
+function makePdf(){const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});let y=16;
+const ns=Object.keys(D.T).map(Number).sort((a,b)=>a-b),L=f=>ns.filter(n=>f(D.T[n])).join(' - ')||'-';
+const H=(t,s)=>{if(y>245){doc.addPage();y=16}doc.setFont(undefined,'bold').setFontSize(s||12).text(t,14,y);y+=6;doc.setFont(undefined,'normal').setFontSize(10)};
+const TB=(head,body,cs)=>{doc.autoTable({startY:y,head:[head],body,rowPageBreak:'avoid',styles:{fontSize:9,cellPadding:1.8,lineColor:[150,150,150],lineWidth:.1},headStyles:{fillColor:[225,228,232],textColor:20},columnStyles:cs,margin:{left:14,right:14}});y=doc.lastAutoTable.finalY+7};
+H('FASCICOLO ODONTOIATRICO',16);doc.text((D.paz?'Paziente: '+D.paz+'  -  ':'')+'Aggiornato al '+new Date().toLocaleDateString('it-IT'),14,y);y+=9;
+H('DEVITALIZZAZIONI E CORONE');[['Denti devitalizzati: ',t=>t.dv],['Denti estratti: ',t=>t.ex||t.st==='Estratto'],['Denti con corona: ',t=>t.co]].forEach(([a,f])=>{doc.text(a+L(f),14,y);y+=5.5});y+=4;
+H('1. SINTESI PER ARCATE E QUADRANTI');
+for(const q of [1,2,3,4]){const r=ns.filter(n=>Math.floor(n/10)==q);if(!r.length)continue;H('QUADRANTE '+q+': '+QN[q],10.5);
+TB(['Dente','Trattamento eseguito','Date di lavorazione','Stato'],r.map(n=>['Dente '+n,D.T[n].tr,forTooth(n).map(s=>fmt(s.d)+' - '+s.p).join('\n'),D.T[n].st]),{0:{cellWidth:20},1:{cellWidth:45},3:{cellWidth:24}})}
+H('2. CRONOLOGIA ANALITICA DELLE SEDUTE CLINICHE');let last='';
+TB(['Data','Dente','Trattamento / Procedura eseguita','Stato / Note'],[...D.sed].sort((a,b)=>a.d.localeCompare(b.d)).map(s=>{const r=[s.d==last?'':fmt(s.d),s.t,s.p,s.c];last=s.d;return r}),{0:{cellWidth:22},1:{cellWidth:20},3:{cellWidth:30}});
+doc.save('fascicolo-odontoiatrico.pdf')}
+$('bPrint').onclick=()=>{try{makePdf()}catch(e){report();window.print()}};
+$('bBk').onclick=()=>{$('bk').classList.toggle('hid');$('bkt').value=JSON.stringify(D)};
+$('bCp').onclick=()=>{$('bkt').select();try{document.execCommand('copy')}catch(e){}};
+$('bImp').onclick=()=>{try{const x=JSON.parse($('bkt').value);if(!x.sed||!x.T)throw 0;if(!confirm('Sostituire i dati attuali con quelli importati?'))return;D=x;$('paz').value=D.paz||'';sel=null;all()}catch(e){alert('Testo di backup non valido.')}};
+all();boot();
+</script>
+</body>
+</html>
