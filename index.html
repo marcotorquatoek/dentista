@@ -18,6 +18,7 @@ input,select,textarea,button{font:inherit;color:var(--tx);background:var(--card)
 input[type=checkbox]{padding:0;width:20px;height:20px}
 button{cursor:pointer}button.p{background:var(--ac);border-color:var(--ac);color:#fff}button.d{color:var(--dvb)}
 input,select,textarea{font-size:16px}
+.t.pv{box-shadow:inset 0 0 0 2px #a855f7;background:#e9d5ff;color:#3b0764}
 label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--mu);flex:1;min-width:130px}
 label.c{flex-direction:row;align-items:center;gap:6px;font-size:14px;color:var(--tx);min-width:0;flex:none}
 .arch{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;margin-bottom:6px}
@@ -47,7 +48,7 @@ body{background:#fff;color:#000;font-size:11pt}.app,.ov{display:none!important}#
 <div class="card">
 <h1>🦷 Fascicolo odontoiatrico</h1>
 <div class="row" style="margin-top:8px">
-<label>Paziente<input id="paz" placeholder="Nome e cognome"></label>
+<label>Paziente<input id="paz" placeholder="Nome e cognome"></label><label style="max-width:190px">Prossima revisione<input type="date" id="rev"></label><span id="revi" class="mu"></span>
 <button class="p" id="bPrint">📄 Scarica PDF</button>
 <button id="bBk">💾 Backup</button><button id="bOut">Esci</button><span id="st" class="mu"></span>
 </div>
@@ -62,7 +63,7 @@ body{background:#fff;color:#000;font-size:11pt}.app,.ov{display:none!important}#
 <div id="v1"><div class="card">
 <h2>Schema dentale <span class="mu">(tocca un dente per modificarlo)</span></h2>
 <div id="grid"></div>
-<div class="lg"><span><i style="background:var(--ok);border-color:var(--okb)"></i>Trattato</span><span><i style="background:var(--co);border-color:var(--cob)"></i>Corona</span><span><i style="background:var(--ex);border-color:var(--exb)"></i>Estratto</span><span><i style="background:var(--ck);border-color:var(--ckb)"></i>Da verificare</span></div>
+<div class="lg"><span><i style="background:var(--ok);border-color:var(--okb)"></i>Trattato</span><span><i style="background:var(--co);border-color:var(--cob)"></i>Corona</span><span><i style="background:var(--ex);border-color:var(--exb)"></i>Estratto</span><span><i style="background:var(--ck);border-color:var(--ckb)"></i>Da verificare</span><span><i style="background:#e9d5ff;border-color:#a855f7"></i>A preventivo</span></div>
 <div id="panel" class="hid"></div>
 </div>
 
@@ -85,12 +86,12 @@ body{background:#fff;color:#000;font-size:11pt}.app,.ov{display:none!important}#
 <label style="max-width:140px">Denti<input id="fT" placeholder="24+26 o Globale"></label>
 <label style="flex:3">Procedura<input id="fP" placeholder="Cosa è stato fatto"></label>
 <label style="max-width:170px">Tipo<input id="fC" list="cats" placeholder="Es. Otturazione"></label>
-<datalist id="cats"><option>Apertura<option>Medicazione<option>Endodonzia<option>Ricostruzione<option>Otturazione<option>Protesi<option>Impronta<option>Corona finale<option>Estrazione<option>Chirurgia<option>Post-chirurgico<option>Igiene<option>Guarito<option>Salvataggio</datalist>
+<datalist id="cats"><option>Revisione<option>Apertura<option>Medicazione<option>Endodonzia<option>Ricostruzione<option>Otturazione<option>Protesi<option>Impronta<option>Corona finale<option>Estrazione<option>Chirurgia<option>Post-chirurgico<option>Igiene<option>Guarito<option>Salvataggio</datalist>
 </div>
 <div class="row" style="margin:8px 0 12px"><button class="p" id="bAdd">Aggiungi seduta</button><button id="bCx" class="hid">Annulla modifica</button></div>
 <div class="sc"><table><thead><tr><th>Data</th><th>Denti</th><th>Procedura</th><th>Tipo</th><th></th></tr></thead><tbody id="sb"></tbody></table></div>
 </div></div>
-<div id="v2" class="hid"><div class="card"><h2>Mappa 3D <span class="mu">(trascina per ruotare · rotellina o pizzico per zoom · tocca un dente)</span></h2><div class="row" style="margin-bottom:8px"><button onclick="show3('all')">Entrambe</button><button onclick="show3('up')">Superiore</button><button onclick="show3('lo')">Inferiore</button><button onclick="nums3()">Numeri</button><button onclick="reset3()">Reset vista</button></div><div id="m3"></div><div class="lg"><span><i style="background:#9fe0b8;border-color:#2e9e5b"></i>Trattato</span><span><i style="background:#8db8f2;border-color:#2f6fd0"></i>Corona / impianto</span><span><i style="background:#9aa1ab;border-color:#71717a;opacity:.4"></i>Estratto</span><span><i style="background:#f5c76b;border-color:#d98a0b"></i>Da verificare</span></div></div></div>
+<div id="v2" class="hid"><div class="card"><h2>Mappa 3D <span class="mu">(trascina per ruotare · rotellina o pizzico per zoom · tocca un dente)</span></h2><div class="row" style="margin-bottom:8px"><button onclick="show3('all')">Entrambe</button><button onclick="show3('up')">Superiore</button><button onclick="show3('lo')">Inferiore</button><button onclick="nums3()">Numeri</button><button onclick="reset3()">Reset vista</button></div><div id="m3"></div><div class="lg"><span><i style="background:#9fe0b8;border-color:#2e9e5b"></i>Trattato</span><span><i style="background:#8db8f2;border-color:#2f6fd0"></i>Corona / impianto</span><span><i style="background:#9aa1ab;border-color:#71717a;opacity:.4"></i>Estratto</span><span><i style="background:#f5c76b;border-color:#d98a0b"></i>Da verificare</span><span><i style="background:#c77dff;border-color:#7e22ce"></i>A preventivo</span></div></div></div>
 </div>
 <div id="toast" class="hid" style="position:fixed;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ac);color:#fff;padding:10px 14px;border-radius:10px;text-align:center"></div>
 <div id="login" class="ov hid"><div class="md"><h2>🔒 Accedi</h2><p class="mu">Il fascicolo è salvato su Supabase e protetto da login.</p><label>Email<input id="lgE" type="email" autocomplete="username"></label><label style="margin-top:8px">Password<input id="lgP" type="password" autocomplete="current-password"></label><p id="lgM" class="mu"></p><div class="row"><button class="p" id="lgIn">Accedi</button><button id="lgUp">Crea account</button></div></div></div>
@@ -112,12 +113,12 @@ const STATI=['Completato','In corso','Salvato','Estratto','Da verificare'];
 const QN={1:'Superiore Destro (11 - 18)',2:'Superiore Sinistro (21 - 28)',3:'Inferiore Sinistro (31 - 38)',4:'Inferiore Destro (41 - 48)'};
 function seed(){const T={};for(const n in seedT){const a=seedT[n];T[n]={tr:a[0],st:a[1],dv:a.includes('dv'),co:a.includes('co'),ex:a.includes('ex')}}
 return{paz:'',T,sed:seedS.map((s,i)=>({id:i+1,d:s[0],t:s[1],p:s[2],c:s[3]}))}}
-let D={paz:'',T:{},sed:[],piani:[]};
+let D={paz:'',T:{},sed:[],piani:[],rev:''};
 const SB_URL='https://zdwzombpaixkcryfpkxg.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpkd3pvbWJwYWl4a2NyeWZwa3hnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3MzczMTAsImV4cCI6MjA5NzMxMzMxMH0.ttAPvk-kV_BWC8RH43eVNXsN6HglLIQhp0rieWwjGPw';
 const sb=window.supabase.createClient(SB_URL,SB_KEY);
 let snap=null,tmr=null,busy=0;
 const setSt=t=>{$('st').textContent=t};
-function snapshot(X){X=X||D;snap={T:{},S:{},Q:{},paz:X.paz};(X.piani||[]).forEach(q=>snap.Q[q.id]=JSON.stringify(q));for(const n in X.T)snap.T[n]=JSON.stringify(X.T[n]);X.sed.forEach(s=>snap.S[s.id]=JSON.stringify(s))}
+function snapshot(X){X=X||D;snap={T:{},S:{},Q:{},paz:X.paz,rev:X.rev||''};(X.piani||[]).forEach(q=>snap.Q[q.id]=JSON.stringify(q));for(const n in X.T)snap.T[n]=JSON.stringify(X.T[n]);X.sed.forEach(s=>snap.S[s.id]=JSON.stringify(s))}
 function save(){if(!snap)return;clearTimeout(tmr);setSt('Salvataggio…');tmr=setTimeout(sync,500)}
 async function sync(){if(busy){tmr=setTimeout(sync,500);return}busy=1;
 try{const X=JSON.parse(JSON.stringify(D)),ck=r=>{if(r.error)throw r.error};
@@ -129,12 +130,13 @@ if(td.length)ck(await sb.from('odonto_teeth').delete().in('num',td));
 if(su.length)ck(await sb.from('odonto_sedute').upsert(su));
 if(sd.length)ck(await sb.from('odonto_sedute').delete().in('id',sd));
 if(snap.paz!==X.paz)ck(await sb.from('odonto_meta').upsert({k:'paz',v:X.paz}));
+if((X.rev||'')!==snap.rev)ck(await sb.from('odonto_meta').upsert({k:'rev',v:X.rev||''}));
 if(qu.length)ck(await sb.from('odonto_piani').upsert(qu));
 if(qd.length)ck(await sb.from('odonto_piani').delete().in('id',qd));
 snapshot(X);setSt('✓ Salvato sul database')}catch(e){setSt('⚠️ Errore: '+(e.message||e))}busy=0}
 async function load(){const [a,b,c,q]=await Promise.all([sb.from('odonto_teeth').select('*'),sb.from('odonto_sedute').select('*'),sb.from('odonto_meta').select('*'),sb.from('odonto_piani').select('*')]);
 for(const r of [a,b,c])if(r.error)throw r.error;
-D={paz:(c.data.find(r=>r.k==='paz')||{}).v||'',T:{},sed:b.data.map(r=>({id:r.id,d:r.d,t:r.t,p:r.p,c:r.c||''}))};
+D={paz:(c.data.find(r=>r.k==='paz')||{}).v||'',rev:(c.data.find(r=>r.k==='rev')||{}).v||'',T:{},sed:b.data.map(r=>({id:r.id,d:r.d,t:r.t,p:r.p,c:r.c||''}))};
 D.piani=q.error?[]:q.data.map(r=>({id:r.id,t:r.t,p:r.p,c:r.c||'',costo:r.costo==null?null:+r.costo,fatto:!!r.fatto,fid:r.fid,fd:r.fd}));if(q.error)setTimeout(()=>alert('Tabella odonto_piani mancante: esegui setup-preventivo.sql in Supabase.'),300);
 a.data.forEach(r=>D.T[r.num]={tr:r.tr||'',st:r.st,dv:r.dv,co:r.co,ex:r.ex});snapshot()}
 async function start(){$('login').className='ov hid';setSt('Caricamento…');
@@ -150,8 +152,8 @@ const teeth=s=>s.t.match(/\d\d/g)||[];
 const forTooth=n=>D.sed.filter(s=>teeth(s).includes(String(n))).sort((a,b)=>a.d.localeCompare(b.d));
 const cls=n=>{const t=D.T[n];if(!t)return'';return t.co?'co':t.ex||t.st==='Estratto'?'ex':t.st==='Da verificare'?'ck':'has'};
 
-function grid(){const rows=[[18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28],[48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38]];
-$('grid').innerHTML=rows.map(r=>'<div class="arch">'+r.map((n,i)=>`<button class="t ${cls(n)} ${sel==n?'sel':''}" data-n="${n}" ${i==8?'style="margin-left:8px"':''}>${n}</button>`).join('')+'</div>').join('');
+function grid(){const PL=planTeeth(),rows=[[18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28],[48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38]];
+$('grid').innerHTML=rows.map(r=>'<div class="arch">'+r.map((n,i)=>`<button class="t ${cls(n)} ${PL.has(String(n))?'pv':''} ${sel==n?'sel':''}" data-n="${n}" ${i==8?'style="margin-left:8px"':''}>${n}</button>`).join('')+'</div>').join('');
 $('grid').querySelectorAll('.t').forEach(b=>b.onclick=()=>{sel=+b.dataset.n;grid();panel()})}
 
 function panel(){const p=$('panel');if(!sel){p.className='hid';return}
@@ -176,7 +178,7 @@ $('sb').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{const s=D.sed.fin
 $('sb').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{if(confirm('Eliminare questa seduta?')){(D.piani||[]).forEach(q=>{if(q.fid==b.dataset.x){q.fatto=false;q.fid=null;q.fd=null}});D.sed=D.sed.filter(x=>x.id!=b.dataset.x);all()}})}
 
 function report(){const ns=Object.keys(D.T).map(Number).sort((a,b)=>a-b),L=f=>ns.filter(n=>f(D.T[n])).join(' – ')||'—';
-let h=`<h1>FASCICOLO ODONTOIATRICO</h1><p>${D.paz?'<b>Paziente:</b> '+esc(D.paz)+' · ':''}Aggiornato al ${new Date().toLocaleDateString('it-IT')}</p>
+let h=`<h1>FASCICOLO ODONTOIATRICO</h1><p>${D.paz?'<b>Paziente:</b> '+esc(D.paz)+' · ':''}Aggiornato al ${new Date().toLocaleDateString('it-IT')}</p>${revTxt()?'<p>'+revTxt()+'</p>':''}
 <h2>DEVITALIZZAZIONI E CORONE</h2><p><b>Denti devitalizzati:</b> ${L(t=>t.dv)}</p><p><b>Denti estratti:</b> ${L(t=>t.ex||t.st==='Estratto')}</p><p><b>Denti con corona:</b> ${L(t=>t.co)}</p><h2>1. SINTESI PER ARCATE E QUADRANTI</h2>`;
 for(const q of [1,2,3,4]){const r=ns.filter(n=>Math.floor(n/10)==q);if(!r.length)continue;
 h+=`<h3>QUADRANTE ${q}: ${QN[q]}</h3><table><tr><th>Dente</th><th>Trattamento eseguito</th><th>Date di lavorazione</th><th>Stato</th></tr>`+r.map(n=>{const t=D.T[n];return`<tr><td><b>Dente ${n}</b></td><td>${esc(t.tr)}</td><td>${forTooth(n).map(s=>`${fmt(s.d)} – ${esc(s.p)}`).join('<br>')}</td><td>${esc(t.st)}</td></tr>`}).join('')+'</table>'}
@@ -216,9 +218,9 @@ g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));g.computeVertexN
 function label(n,y,z){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');x.font='bold 34px sans-serif';x.textAlign='center';x.textBaseline='middle';x.lineWidth=7;x.strokeStyle='#1c2430';x.strokeText(n,32,34);x.fillStyle='#fff';x.fillText(n,32,34);
 const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));s.scale.set(4.5,4.5,1);s.position.set(0,y,z);s.visible=T3.nm!==0;return s}
 function makeTooth(n){const k=n%10,up=Math.floor(n/10)<3,t=D.T[n],c=cls(n),w=W3[k]*.96,d=DP[k],g=new THREE.Group();g.userData.n=n;
-const ghost=c==='ex',impl=!!(t&&t.ex&&t.co),col={has:0x9fe0b8,co:0x8db8f2,ck:0xf5c76b}[c]||0xf4efe4;
-const m=new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.3,clearcoat:.5,clearcoatRoughness:.25,transparent:ghost,opacity:ghost?.22:1});
-g.add(new THREE.Mesh(crownGeo(k,new THREE.Color(ghost?0x9aa1ab:col),ghost?0:(c?.2:.55)),m));
+const pl=planTeeth().has(String(n)),ghost=c==='ex',impl=!!(t&&t.ex&&t.co),col=pl?0xc77dff:({has:0x9fe0b8,co:0x8db8f2,ck:0xf5c76b}[c]||0xf4efe4);
+const m=new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.3,clearcoat:.5,clearcoatRoughness:.25,transparent:ghost,opacity:ghost?(pl?.55:.22):1});if(pl){m.emissive=new THREE.Color(0x7e22ce);m.emissiveIntensity=.35}
+g.add(new THREE.Mesh(crownGeo(k,new THREE.Color(ghost&&!pl?0x9aa1ab:col),ghost||pl?0:(c?.2:.55)),m));
 if(!ghost){const rm=new THREE.MeshStandardMaterial({color:0xe3d3a8,roughness:.6}),rt=(x,z,r,l)=>{const q=new THREE.Mesh(new THREE.CylinderGeometry(r,r*.25,l,12),rm);q.position.set(x,-l/2+1.5,z);g.add(q)};
 if(impl){const im=new THREE.MeshStandardMaterial({color:0x9aa3ad,metalness:.8,roughness:.3}),b=new THREE.Mesh(new THREE.CylinderGeometry(2.1,1.7,9,16),im);b.position.y=-3.5;g.add(b);for(let i=0;i<4;i++){const r=new THREE.Mesh(new THREE.CylinderGeometry(2.6,2.6,.5,16),im);r.position.y=-1-i*2;g.add(r)}}
 else if(k<=5)rt(0,0,Math.min(w,d)*.3,RL[k]);
@@ -259,14 +261,19 @@ function reset3(){T3.yaw=0;T3.pitch=.22;T3.dist=140;show3('all');upd3()}
 function tab(i){$('v1').className=i?'hid':'';$('v2').className=i?'':'hid';document.querySelectorAll('.tab').forEach((b,j)=>b.classList.toggle('p',j==i));T3.vis=i;
 if(i){init3();resize3();if(T3.on&&!T3.run){T3.run=1;(function f(){if(!T3.vis){T3.run=0;return}T3.r.render(T3.sc,T3.cam);requestAnimationFrame(f)})()}}}
 addEventListener('resize',()=>{if(T3.vis)resize3()});
-function pop(n){const t=D.T[n],ss=forTooth(n),p=$('pop');const ch=t?[t.dv&&'Devitalizzato',t.co&&'Con corona',(t.ex||t.st==='Estratto')&&'Estratto'].filter(Boolean):[];
+function pop(n){const t=D.T[n],ss=forTooth(n),p=$('pop'),pq=(D.piani||[]).filter(q=>!q.fatto&&teeth(q).includes(String(n)));const ch=t?[t.dv&&'Devitalizzato',t.co&&'Con corona',(t.ex||t.st==='Estratto')&&'Estratto'].filter(Boolean):[];
 p.className='ov';const x=()=>{p.className='ov hid'};
-p.innerHTML=`<div class="md"><h2>Dente ${n} <span class="mu">· Quadrante ${Math.floor(n/10)}</span></h2>`+(t?`<p><b>Stato:</b> ${esc(t.st)}</p><p><b>Trattamento:</b> ${esc(t.tr)||'—'}</p>${ch.length?'<p>'+ch.map(c=>`<span class="chip">${c}</span>`).join('')+'</p>':''}`:'<p class="mu">Nessuna scheda per questo dente.</p>')+'<p style="margin-top:12px"><b>Lavori eseguiti</b></p>'+(ss.length?'<table>'+ss.map(s=>`<tr><td style="white-space:nowrap">${fmt(s.d)}</td><td>${esc(s.p)}${s.c?` <span class="mu">(${esc(s.c)})</span>`:''}</td></tr>`).join('')+'</table>':'<p class="mu">Nessuna seduta registrata.</p>')+'<div class="row" style="margin-top:12px"><button class="p" id="mEd">Modifica dente</button><button id="mNs">+ Seduta</button><button id="mCl">Chiudi</button></div></div>';
+p.innerHTML=`<div class="md"><h2>Dente ${n} <span class="mu">· Quadrante ${Math.floor(n/10)}</span></h2>`+(t?`<p><b>Stato:</b> ${esc(t.st)}</p><p><b>Trattamento:</b> ${esc(t.tr)||'—'}</p>${ch.length?'<p>'+ch.map(c=>`<span class="chip">${c}</span>`).join('')+'</p>':''}`:'<p class="mu">Nessuna scheda per questo dente.</p>')+'<p style="margin-top:12px"><b>Lavori eseguiti</b></p>'+(ss.length?'<table>'+ss.map(s=>`<tr><td style="white-space:nowrap">${fmt(s.d)}</td><td>${esc(s.p)}${s.c?` <span class="mu">(${esc(s.c)})</span>`:''}</td></tr>`).join('')+'</table>':'<p class="mu">Nessuna seduta registrata.</p>')+(pq.length?'<p style="margin-top:12px"><b>💜 A preventivo</b></p><table>'+pq.map(q=>`<tr><td>${esc(q.p)}</td><td class="mu">${esc(q.c)}</td><td style="white-space:nowrap">${eur(q.costo)}</td></tr>`).join('')+'</table>':'')+'<div class="row" style="margin-top:12px"><button class="p" id="mEd">Modifica dente</button><button id="mNs">+ Seduta</button><button id="mCl">Chiudi</button></div></div>';
 p.onclick=e=>{if(e.target===p)x()};$('mCl').onclick=x;
 $('mEd').onclick=()=>{x();sel=n;all();$('panel').scrollIntoView({behavior:'smooth'})};
 $('mNs').onclick=()=>{x();clearForm();$('fT').value=n;$('fD').value=new Date().toISOString().slice(0,10);$('sed').scrollIntoView({behavior:'smooth'});$('fP').focus()}}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('pop').className='ov hid'});
 
+const lastRev=()=>D.sed.filter(s=>/revision/i.test(s.c)).map(s=>s.d).sort().pop();
+const revTxt=()=>[lastRev()&&'Ultima revisione: '+fmt(lastRev()),D.rev&&'Prossima revisione: '+fmt(D.rev)].filter(Boolean).join(' · ');
+function revUi(){const l=lastRev(),td=new Date().toISOString().slice(0,10);$('rev').value=D.rev||'';$('revi').innerHTML=(l?'Ultima: '+fmt(l):'')+(D.rev&&D.rev<td?' <b style="color:var(--dvb)">⚠️ scaduta</b>':'')}
+$('rev').onchange=()=>{D.rev=$('rev').value;all()};
+const planTeeth=()=>new Set((D.piani||[]).filter(q=>!q.fatto).flatMap(teeth));
 const eur=v=>v==null||v===''?'—':'€ '+(+v).toFixed(2).replace('.',',');
 let qEdit=null,tt=null;
 function toast(m){const e=$('toast');e.textContent=m;e.className='';clearTimeout(tt);tt=setTimeout(()=>e.className='hid',5000)}
@@ -289,13 +296,13 @@ $('qb').innerHTML=[...P].sort((a,b)=>(a.fatto-b.fatto)||String(a.t).localeCompar
 $('qb').querySelectorAll('[data-f]').forEach(b=>b.onchange=()=>{const q=D.piani.find(x=>x.id==b.dataset.f);q.fatto=b.checked;q.fid=null;q.fd=b.checked?new Date().toISOString().slice(0,10):null;all()});
 $('qb').querySelectorAll('[data-qe]').forEach(b=>b.onclick=()=>{const q=D.piani.find(x=>x.id==b.dataset.qe);qEdit=q.id;$('qT').value=q.t;$('qP').value=q.p;$('qC').value=q.c;$('qK').value=q.costo??'';$('qAdd').textContent='Salva modifica';$('qCx').className='';$('pia').scrollIntoView({behavior:'smooth'})});
 $('qb').querySelectorAll('[data-qx]').forEach(b=>b.onclick=()=>{if(confirm('Eliminare questo lavoro dal preventivo?')){D.piani=D.piani.filter(x=>x.id!=b.dataset.qx);all()}})}
-function all(){D.piani=D.piani||[];save();grid();build3();panel();sedute();pianiUi();report()}
+function all(){D.piani=D.piani||[];save();grid();build3();panel();sedute();pianiUi();revUi();report()}
 $('paz').oninput=()=>{D.paz=$('paz').value;save();report()};
 function makePdf(){const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});let y=16;
 const ns=Object.keys(D.T).map(Number).sort((a,b)=>a-b),L=f=>ns.filter(n=>f(D.T[n])).join(' - ')||'-';
 const H=(t,s)=>{if(y>245){doc.addPage();y=16}doc.setFont(undefined,'bold').setFontSize(s||12).text(t,14,y);y+=6;doc.setFont(undefined,'normal').setFontSize(10)};
 const TB=(head,body,cs)=>{doc.autoTable({startY:y,head:[head],body,rowPageBreak:'avoid',styles:{fontSize:9,cellPadding:1.8,lineColor:[150,150,150],lineWidth:.1},headStyles:{fillColor:[225,228,232],textColor:20},columnStyles:cs,margin:{left:14,right:14}});y=doc.lastAutoTable.finalY+7};
-H('FASCICOLO ODONTOIATRICO',16);doc.text((D.paz?'Paziente: '+D.paz+'  -  ':'')+'Aggiornato al '+new Date().toLocaleDateString('it-IT'),14,y);y+=9;
+H('FASCICOLO ODONTOIATRICO',16);doc.text((D.paz?'Paziente: '+D.paz+'  -  ':'')+'Aggiornato al '+new Date().toLocaleDateString('it-IT'),14,y);y+=6;if(revTxt()){doc.text(revTxt(),14,y);y+=6}y+=3;
 H('DEVITALIZZAZIONI E CORONE');[['Denti devitalizzati: ',t=>t.dv],['Denti estratti: ',t=>t.ex||t.st==='Estratto'],['Denti con corona: ',t=>t.co]].forEach(([a,f])=>{doc.text(a+L(f),14,y);y+=5.5});y+=4;
 H('1. SINTESI PER ARCATE E QUADRANTI');
 for(const q of [1,2,3,4]){const r=ns.filter(n=>Math.floor(n/10)==q);if(!r.length)continue;H('QUADRANTE '+q+': '+QN[q],10.5);
